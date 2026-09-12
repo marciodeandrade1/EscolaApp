@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EscolaApp.ViewModels"
+             x:Class="EscolaApp.Views.CursoFormPage"
+             x:DataType="vm:CursoFormViewModel"
+             Title="{Binding Titulo}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24" Spacing="20">
+
+            <Label Text="{Binding Titulo}" Style="{StaticResource PageTitleStyle}" />
+            <Label Text="Preencha os dados do curso" Style="{StaticResource PageSubtitleStyle}" />
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="16">
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="NOME DO CURSO" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Entry Text="{Binding Nome}" Placeholder="Ex.: Desenvolvimento Web" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="DESCRIÇÃO" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Editor Text="{Binding Descricao}" Placeholder="Breve descrição do curso" HeightRequest="90" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CARGA HORÁRIA (HORAS)" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Entry Text="{Binding CargaHoraria}" Keyboard="Numeric" Placeholder="Ex.: 40" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding MensagemErro}"
+                           TextColor="{StaticResource Danger}"
+                           IsVisible="{Binding MensagemErro, Converter={StaticResource IsNotEmptyConverter}}"
+                           FontSize="13" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0" Text="Cancelar"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Command="{Binding CancelarCommand}" />
+                <Button Grid.Column="1" Text="Salvar"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding SalvarCommand}" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

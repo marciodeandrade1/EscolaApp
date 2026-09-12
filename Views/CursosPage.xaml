@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EscolaApp.ViewModels"
+             xmlns:models="clr-namespace:EscolaApp.Models"
+             x:Class="EscolaApp.Views.CursosPage"
+             x:DataType="vm:CursosViewModel"
+             Title="Cursos"
+             NavigatedTo="ContentPage_NavigatedTo">
+
+    <Grid RowDefinitions="Auto,*" Padding="20,16" RowSpacing="16">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                <Label Text="Cursos" Style="{StaticResource PageTitleStyle}" />
+                <Label Text="Gerencie o catálogo de cursos" Style="{StaticResource PageSubtitleStyle}" />
+            </VerticalStackLayout>
+
+            <Button Grid.Column="1" Text="+"
+                    Style="{StaticResource FabButtonStyle}"
+                    Command="{Binding NovoCommand}"
+                    VerticalOptions="Center" />
+        </Grid>
+
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding EstaCarregando}"
+                     Command="{Binding CarregarCommand}">
+            <Grid>
+                <CollectionView ItemsSource="{Binding Cursos}"
+                                 IsVisible="{Binding ListaVazia, Converter={StaticResource InvertedBoolConverter}, FallbackValue=True}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Curso">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Excluir"
+                                                   BackgroundColor="{StaticResource Danger}"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CursosViewModel}}, Path=ExcluirCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Style="{StaticResource CardStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CursosViewModel}}, Path=EditarCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                            <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="16"
+                                                   TextColor="{StaticResource TextPrimary}" />
+                                            <Label Text="{Binding Descricao}" FontSize="13"
+                                                   TextColor="{StaticResource TextSecondary}"
+                                                   LineBreakMode="TailTruncation" MaxLines="2" />
+                                        </VerticalStackLayout>
+
+                                        <Border Grid.Column="1"
+                                                Style="{StaticResource BadgeStyle}"
+                                                BackgroundColor="{StaticResource SecondarySoft}"
+                                                VerticalOptions="Start">
+                                            <Label Text="{Binding CargaHorariaLabel}"
+                                                   TextColor="{StaticResource Secondary}"
+                                                   FontAttributes="Bold" FontSize="12" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <VerticalStackLayout IsVisible="{Binding ListaVazia}"
+                                      VerticalOptions="Center" HorizontalOptions="Center"
+                                      Spacing="8">
+                    <Label Text="📚" FontSize="42" HorizontalOptions="Center" />
+                    <Label Text="Nenhum curso cadastrado" FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                    <Label Text="Toque no botão + para adicionar o primeiro curso"
+                           TextColor="{StaticResource TextSecondary}" FontSize="13"
+                           HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </RefreshView>
+    </Grid>
+</ContentPage>

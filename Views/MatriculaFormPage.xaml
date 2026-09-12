@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EscolaApp.ViewModels"
+             x:Class="EscolaApp.Views.MatriculaFormPage"
+             x:DataType="vm:MatriculaFormViewModel"
+             Title="{Binding Titulo}"
+             NavigatedTo="ContentPage_NavigatedTo">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24" Spacing="20">
+
+            <Label Text="{Binding Titulo}" Style="{StaticResource PageTitleStyle}" />
+            <Label Text="Vincule um aluno a um curso" Style="{StaticResource PageSubtitleStyle}" />
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="16">
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="ALUNO" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Picker ItemsSource="{Binding Alunos}"
+                                    ItemDisplayBinding="{Binding Nome}"
+                                    SelectedItem="{Binding AlunoSelecionado}"
+                                    Title="Selecione o aluno" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CURSO" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Picker ItemsSource="{Binding Cursos}"
+                                    ItemDisplayBinding="{Binding Nome}"
+                                    SelectedItem="{Binding CursoSelecionado}"
+                                    Title="Selecione o curso" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="DATA DA MATRÍCULA" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <DatePicker Date="{Binding DataMatricula}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="STATUS" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Picker ItemsSource="{Binding StatusDisponiveis}"
+                                    SelectedItem="{Binding StatusSelecionado}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding MensagemErro}"
+                           TextColor="{StaticResource Danger}"
+                           IsVisible="{Binding MensagemErro, Converter={StaticResource IsNotEmptyConverter}}"
+                           FontSize="13" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0" Text="Cancelar"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Command="{Binding CancelarCommand}" />
+                <Button Grid.Column="1" Text="Salvar"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding SalvarCommand}" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

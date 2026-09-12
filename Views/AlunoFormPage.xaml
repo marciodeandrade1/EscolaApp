@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EscolaApp.ViewModels"
+             x:Class="EscolaApp.Views.AlunoFormPage"
+             x:DataType="vm:AlunoFormViewModel"
+             Title="{Binding Titulo}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24" Spacing="20">
+
+            <Label Text="{Binding Titulo}" Style="{StaticResource PageTitleStyle}" />
+            <Label Text="Preencha os dados do aluno" Style="{StaticResource PageSubtitleStyle}" />
+
+            <!-- Card do formulário -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="16">
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="NOME COMPLETO" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Entry Text="{Binding Nome}" Placeholder="Ex.: Maria Souza" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="E-MAIL" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Entry Text="{Binding Email}" Placeholder="exemplo@email.com" Keyboard="Email" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="TELEFONE" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <Entry Text="{Binding Telefone}" Placeholder="(00) 00000-0000" Keyboard="Telephone" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="DATA DE NASCIMENTO" Style="{StaticResource FieldLabelStyle}" />
+                        <Border Style="{StaticResource InputFrameStyle}">
+                            <DatePicker Date="{Binding DataNascimento}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding MensagemErro}"
+                           TextColor="{StaticResource Danger}"
+                           IsVisible="{Binding MensagemErro, Converter={StaticResource IsNotEmptyConverter}}"
+                           FontSize="13" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Ações -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button Grid.Column="0" Text="Cancelar"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Command="{Binding CancelarCommand}" />
+                <Button Grid.Column="1" Text="Salvar"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding SalvarCommand}" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

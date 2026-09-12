@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EscolaApp.ViewModels"
+             xmlns:models="clr-namespace:EscolaApp.Models"
+             x:Class="EscolaApp.Views.AlunosPage"
+             x:DataType="vm:AlunosViewModel"
+             Title="Alunos"
+             NavigatedTo="ContentPage_NavigatedTo">
+
+    <Grid RowDefinitions="Auto,*" Padding="20,16" RowSpacing="16">
+
+        <!-- Cabeçalho -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                <Label Text="Alunos" Style="{StaticResource PageTitleStyle}" />
+                <Label Text="Gerencie os alunos cadastrados" Style="{StaticResource PageSubtitleStyle}" />
+            </VerticalStackLayout>
+
+            <Button Grid.Column="1"
+                    Text="+"
+                    Style="{StaticResource FabButtonStyle}"
+                    Command="{Binding NovoCommand}"
+                    VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Lista -->
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding EstaCarregando}"
+                     Command="{Binding CarregarCommand}">
+            <Grid>
+                <CollectionView ItemsSource="{Binding Alunos}"
+                                 IsVisible="{Binding ListaVazia, Converter={StaticResource InvertedBoolConverter}, FallbackValue=True}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Aluno">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Excluir"
+                                                   BackgroundColor="{StaticResource Danger}"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AlunosViewModel}}, Path=ExcluirCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Style="{StaticResource CardStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AlunosViewModel}}, Path=EditarCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <Grid ColumnDefinitions="52,*" ColumnSpacing="14">
+                                        <Border Grid.Column="0"
+                                                BackgroundColor="{StaticResource PrimarySoft}"
+                                                StrokeThickness="0"
+                                                WidthRequest="52" HeightRequest="52"
+                                                Padding="0"
+                                                StrokeShape="RoundRectangle 26">
+                                            <Label Text="{Binding Iniciais}"
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontAttributes="Bold"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="16"
+                                                   TextColor="{StaticResource TextPrimary}" />
+                                            <Label Text="{Binding Email}" FontSize="13"
+                                                   TextColor="{StaticResource TextSecondary}" />
+                                            <Label Text="{Binding Telefone}" FontSize="13"
+                                                   TextColor="{StaticResource TextSecondary}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Estado vazio -->
+                <VerticalStackLayout IsVisible="{Binding ListaVazia}"
+                                      VerticalOptions="Center" HorizontalOptions="Center"
+                                      Spacing="8">
+                    <Label Text="🎓" FontSize="42" HorizontalOptions="Center" />
+                    <Label Text="Nenhum aluno cadastrado" FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                    <Label Text="Toque no botão + para adicionar o primeiro aluno"
+                           TextColor="{StaticResource TextSecondary}" FontSize="13"
+                           HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </RefreshView>
+    </Grid>
+</ContentPage>

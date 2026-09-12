@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EscolaApp.ViewModels"
+             xmlns:models="clr-namespace:EscolaApp.Models"
+             x:Class="EscolaApp.Views.MatriculasPage"
+             x:DataType="vm:MatriculasViewModel"
+             Title="Matrículas"
+             NavigatedTo="ContentPage_NavigatedTo">
+
+    <Grid RowDefinitions="Auto,*" Padding="20,16" RowSpacing="16">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                <Label Text="Matrículas" Style="{StaticResource PageTitleStyle}" />
+                <Label Text="Vincule alunos aos cursos" Style="{StaticResource PageSubtitleStyle}" />
+            </VerticalStackLayout>
+
+            <Button Grid.Column="1" Text="+"
+                    Style="{StaticResource FabButtonStyle}"
+                    Command="{Binding NovaCommand}"
+                    VerticalOptions="Center" />
+        </Grid>
+
+        <RefreshView Grid.Row="1"
+                     IsRefreshing="{Binding EstaCarregando}"
+                     Command="{Binding CarregarCommand}">
+            <Grid>
+                <CollectionView ItemsSource="{Binding Matriculas}"
+                                 IsVisible="{Binding ListaVazia, Converter={StaticResource InvertedBoolConverter}, FallbackValue=True}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:MatriculaDetalhada">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Excluir"
+                                                   BackgroundColor="{StaticResource Danger}"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MatriculasViewModel}}, Path=ExcluirCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Style="{StaticResource CardStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MatriculasViewModel}}, Path=EditarCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="6">
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                               Text="{Binding NomeAluno}" FontAttributes="Bold" FontSize="16"
+                                               TextColor="{StaticResource TextPrimary}" />
+
+                                        <Border Grid.Row="0" Grid.Column="1"
+                                                Style="{StaticResource BadgeStyle}"
+                                                BackgroundColor="{Binding Status, Converter={StaticResource StatusToColorConverter}, ConverterParameter=Background}">
+                                            <Label Text="{Binding StatusLabel}"
+                                                   TextColor="{Binding Status, Converter={StaticResource StatusToColorConverter}, ConverterParameter=Text}"
+                                                   FontAttributes="Bold" FontSize="12" />
+                                        </Border>
+
+                                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                               FontSize="13" TextColor="{StaticResource TextSecondary}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding NomeCurso}" />
+                                                    <Span Text="  •  " />
+                                                    <Span Text="{Binding DataMatriculaLabel}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <VerticalStackLayout IsVisible="{Binding ListaVazia}"
+                                      VerticalOptions="Center" HorizontalOptions="Center"
+                                      Spacing="8">
+                    <Label Text="📋" FontSize="42" HorizontalOptions="Center" />
+                    <Label Text="Nenhuma matrícula cadastrada" FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center" />
+                    <Label Text="Toque no botão + para matricular um aluno em um curso"
+                           TextColor="{StaticResource TextSecondary}" FontSize="13"
+                           HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </RefreshView>
+    </Grid>
+</ContentPage>

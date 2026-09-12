@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:EscolaApp.Views"
+       x:Class="EscolaApp.AppShell"
+       Shell.FlyoutBehavior="Disabled"
+       Title="EscolaApp">
+
+    <TabBar>
+        <ShellContent Title="Alunos"
+                      Route="alunos"
+                      ContentTemplate="{DataTemplate views:AlunosPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="OpenSansSemibold" Glyph="&#128100;" />
+            </ShellContent.Icon>
+        </ShellContent>
+
+        <ShellContent Title="Cursos"
+                      Route="cursos"
+                      ContentTemplate="{DataTemplate views:CursosPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="OpenSansSemibold" Glyph="&#128218;" />
+            </ShellContent.Icon>
+        </ShellContent>
+
+        <ShellContent Title="Matrículas"
+                      Route="matriculas"
+                      ContentTemplate="{DataTemplate views:MatriculasPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="OpenSansSemibold" Glyph="&#128203;" />
+            </ShellContent.Icon>
+        </ShellContent>
+    </TabBar>
+
+</Shell>

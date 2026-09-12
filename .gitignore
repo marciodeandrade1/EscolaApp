@@ -1,0 +1,35 @@
+# Build results
+bin/
+obj/
+out/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# .NET MAUI específico
+*.apk
+*.aab
+*.ipa
+*.app
+*.dSYM/
+
+# Banco de dados local gerado em runtime
+*.db3
+*.db3-journal
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
